@@ -15,13 +15,29 @@ exports.handler = async (event) => {
         let group = groupData.Item;
         if (!group) {
             // Group not found; optionally handle group creation or return an error
-            return { statusCode: 404, body: JSON.stringify({ message: "Group not found.", action: 'joinGroup' }) };
+            return { 
+                statusCode: 404, 
+                body: JSON.stringify({ message: "Group not found.", action: 'joinGroup' }),
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST"
+                }  
+            };
         }
 
         // Ensure the group does not exceed the maximum number of members
         const maxMembers = group.maxMembers || Infinity; // Fallback to Infinity if maxMembers is not set, effectively no limit
         if (group.members && group.members.length >= maxMembers) {
-            return { statusCode: 400, body: JSON.stringify({ message: "Group has reached its maximum number of members.", action: 'joinGroup' }) };
+            return { 
+                statusCode: 400, 
+                body: JSON.stringify({ message: "Group has reached its maximum number of members.", action: 'joinGroup' }), 
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST"
+                }  
+            };
         }
 
         // Check if the user is already a member of the group
@@ -39,13 +55,37 @@ exports.handler = async (event) => {
                 },
             }).promise();
 
-            return { statusCode: 200, body: JSON.stringify({ message: 'User joined the group successfully.', action: 'joinGroup' }) };
+            return { 
+                statusCode: 200, 
+                body: JSON.stringify({ message: 'User joined the group successfully.', action: 'joinGroup' }),
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST"
+                }  
+            };
         } else {
             // User is already a member of the group
-            return { statusCode: 200, body: JSON.stringify({ message: 'User is already a member of the group.', action: 'joinGroup' }) };
+            return { 
+                statusCode: 200, 
+                body: JSON.stringify({ message: 'User is already a member of the group.', action: 'joinGroup' }),
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST"
+                }  
+            };
         }
     } catch (err) {
         console.error('Error joining group:', err);
-        return { statusCode: 500, body: JSON.stringify({ message: 'Failed to join group', action: 'joinGroup' }) };
+        return { 
+            statusCode: 500, 
+            body: JSON.stringify({ message: 'Failed to join group', action: 'joinGroup' }), 
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST"
+            }  
+        };
     }
 };
