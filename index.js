@@ -26,6 +26,19 @@ exports.handler = async (event) => {
             };
         }
 
+        if (!userId) {
+            // Group not found; optionally handle group creation or return an error
+            return { 
+                statusCode: 404, 
+                body: JSON.stringify({ message: "No user given.", action: 'joinGroup' }),
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST"
+                }  
+            };
+        }
+
         // Ensure the group does not exceed the maximum number of members
         const maxMembers = group.maxMembers || Infinity; // Fallback to Infinity if maxMembers is not set, effectively no limit
         if (group.members && group.members.length >= maxMembers) {
