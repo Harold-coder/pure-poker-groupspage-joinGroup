@@ -62,7 +62,7 @@ exports.handler = async (event) => {
             await dynamoDb.update({
                 TableName: groupsTableName,
                 Key: { groupId },
-                UpdateExpression: "SET members = :newMembers",
+                UpdateExpression: "SET membersList = :newMembers",
                 ExpressionAttributeValues: {
                     ":newMembers": newMembers,
                 },
