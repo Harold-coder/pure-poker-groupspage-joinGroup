@@ -41,7 +41,7 @@ exports.handler = async (event) => {
 
         // Ensure the group does not exceed the maximum number of members
         const maxMembers = group.maxMembers || Infinity; // Fallback to Infinity if maxMembers is not set, effectively no limit
-        if (group.members && group.members.length >= maxMembers) {
+        if (group.membersList && group.membersList.length >= maxMembers) {
             return { 
                 statusCode: 400, 
                 body: JSON.stringify({ message: "Group has reached its maximum number of members.", action: 'joinGroup' }), 
@@ -54,9 +54,9 @@ exports.handler = async (event) => {
         }
 
         // Check if the user is already a member of the group
-        if (!group.members || !group.members.includes(userId)) {
+        if (!group.membersList || !group.membersList.includes(userId)) {
             // Add the user to the members array
-            const newMembers = group.members ? [...group.members, userId] : [userId];
+            const newMembers = group.membersList ? [...group.membersList, userId] : [userId];
 
             // Update the group in the database to include the new member
             await dynamoDb.update({
